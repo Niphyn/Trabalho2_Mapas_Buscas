@@ -100,9 +100,10 @@ void *hash_table_pop(HashTable *h, void *key){
 
 void hash_table_destroy(HashTable *h){
     HashTableIterator *iterator = hash_table_iterator(h);
-    while(!hash_table_iterator_is_over){
-        free(iterator->item);
-        hash_table_iterator_next(iterator);
+    HashTableItem item = iterator->item;
+    while(item != NULL){
+        free(item);
+        item = hash_table_iterator_next(iterator);
     }
     for(int i = 0; i < h->table_size; i++){
         forward_list_destroy(h->buckets[i]);
@@ -120,7 +121,24 @@ int hash_table_iterator_is_over(HashTableIterator *it){
 }
 
 HashTableItem *hash_table_iterator_next(HashTableIterator *it){
-    //Calcular o proximo iterador
+    if(it->indice_item + 1 < forward_list_size(it->h->buckets[it->bucket])){
+        it->indice_item = indice_item + 1;
+        it->item = forward_list_get(it->h->buckets[it->bucket],it->indice_item);
+        return it->item;
+    }else{
+        int i = it->bucket;
+        while(i < it->h->table_size){
+            if(){
+
+                }
+            }
+        }
+        if(i >= it->h->table_size){
+            return NULL;
+        }else{
+            
+        }
+    }
 }
 
 void hash_table_iterator_destroy(HashTableIterator *it){
