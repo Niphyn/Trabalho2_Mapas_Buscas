@@ -33,6 +33,7 @@ int forward_list_size(ForwardList *l){
 
 //Funcionamento da função de comparação esperada: iguais = 0, diferentes != 0
 data_type forward_list_find(ForwardList *l, void *key, int (*cmp_fn)(data_type data, void *key)){
+    printf("Achando nó %p\n",l->head);
     Node *atual = l->head;
     while(atual != NULL){
         if(!cmp_fn(atual->value,key)){
@@ -85,11 +86,11 @@ void forward_list_print(ForwardList *l, void (*print_fn)(data_type)){
 data_type forward_list_get(ForwardList *l, int i){
     Node *atual = l->head;
     if(i >= forward_list_size(l)){
-        printf("Índice acima do tamanho dessa lista.\n");
-        exit(1);
+        //printf("Índice acima do tamanho dessa lista.\n");
+        return NULL;
     }else if(i < 0){
-        printf("Índice abaixo de 0.\n");
-        exit(1);
+        //printf("Índice abaixo de 0.\n");
+        return NULL;
     }else{
         for(int j = 1; j <= i; j++){
             atual = atual->next;
