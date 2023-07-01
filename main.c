@@ -62,8 +62,9 @@ int main()
             cel = heap_push(heap, cel, priority);
 
             // se a celula ja existia, lembre-se liberar a memoria alocada para a nova celula
-            if (cel)
+            if (cel){
                 celula_destroy(cel);
+            }
         }
         else if (!strcmp(cmd, "POP"))
         {
@@ -76,8 +77,10 @@ int main()
 
     HashTableIterator *it = hash_table_iterator(h);
 
+    //dando problema no pop do heap ou hash
     while (!hash_table_iterator_is_over(it))
     {
+        printf("Apagando\n");
         HashTableItem *item = hash_table_iterator_next(it);
         Celula *cel = (Celula *)item->key;
         int *pos = (int *)item->val;

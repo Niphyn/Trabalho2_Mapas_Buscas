@@ -13,7 +13,7 @@ typedef struct{
     int size;
 } ForwardList;
 
-typedef struct HashTable {
+typedef struct HashTable{
     ForwardList **buckets;
     HashFunction hash_fn;
     CmpFunction cmp_fn;
@@ -140,7 +140,7 @@ void *hash_table_pop(HashTable *h, void *key){
             if((!h->cmp_fn(item->key,key))){
                 valor_achado = item->val;
                 //tirar node da lista
-                if(past == NULL){
+                if(h->buckets[indice]->head == atual){
                     h->buckets[indice]->head = atual->next;
                     if(atual == h->buckets[indice]->last){
                         h->buckets[indice]->head = NULL;
@@ -154,6 +154,7 @@ void *hash_table_pop(HashTable *h, void *key){
                     }
                 }
                 h->buckets[indice]->size = h->buckets[indice]->size-1;
+                h->n_elements = h->n_elements - 1;
                 free(atual);
                 free(item);
                 break;

@@ -9,7 +9,7 @@ typedef struct Heap Heap;
 
 // a funcao de comparacao para o heap está dentro da hash table
 Heap *heap_construct(HashTable *h);
-void heap_push(Heap *heap, void *data, double priority);
+void *heap_push(Heap *heap, void *data, double priority);
 bool heap_empty(Heap *heap);
 void *heap_min(Heap *heap);
 double heap_min_priority(Heap *heap);
