@@ -139,7 +139,6 @@ void *hash_table_pop(HashTable *h, void *key){
             item = atual->value;
             if((!h->cmp_fn(item->key,key))){
                 valor_achado = item->val;
-                //tirar node da lista
                 if(h->buckets[indice]->head == atual){
                     h->buckets[indice]->head = atual->next;
                     if(atual == h->buckets[indice]->last){

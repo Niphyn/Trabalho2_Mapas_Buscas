@@ -43,7 +43,7 @@ int celula_cmp(void *c1, void *c2)
 
 int main()
 {
-    int i, n, x, y, priority;
+    int i, n = 0, x, y, priority;
     char cmd[10];
 
     HashTable *h = hash_table_construct(19, celula_hash, celula_cmp);

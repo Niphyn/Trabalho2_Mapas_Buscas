@@ -26,7 +26,7 @@ Heap *heap_construct(HashTable *h){
 }
 
 void heap_swap(Heap *heap, int indice1, int indice2){
-    if(!heap_empty(heap)){
+    if((heap->size >= 2)&&(indice1 != indice2)&&(indice1 != -1)&&(indice1 != -1)){
         int *i1 = (int *)calloc(1,sizeof(int));
         int *i2 = (int *)calloc(1,sizeof(int));
         *i1 = indice1;
@@ -68,7 +68,7 @@ void *heap_push(Heap *heap, void *data, double priority){
             heap->capacity = heap->capacity*2;
             heap->nodes = (HeapNode *)realloc(heap->nodes,sizeof(HeapNode)*heap->capacity);
         }
-        HeapNode *node = (HeapNode *)calloc(1,sizeof(HeapNode));//esta linha esta estranha
+        HeapNode *node = (HeapNode *)calloc(1,sizeof(HeapNode));
         node->key = data;
         node->priority = priority;
         heap->nodes[heap->size] = *node;
@@ -79,9 +79,9 @@ void *heap_push(Heap *heap, void *data, double priority){
         heap_heapfy_up(heap,heap->size-1);
         return NULL;
     }else{
-        printf("Repetindo %d\n",*existe);
         heap->nodes[*existe].priority = priority;
         heap_heapfy_up(heap,*existe);
+        free(indice);
         return data;
     }
 }
@@ -101,7 +101,7 @@ double heap_min_priority(Heap *heap){
 void heap_heapfy_down(Heap *heap){
     int indice = 1,indice_anterior = 0, i = 0;
     while(indice < heap->size){
-        if(heap->nodes[indice].priority > heap->nodes[indice_anterior].priority){
+        if(heap->nodes[indice].priority < heap->nodes[indice_anterior].priority){
             heap_swap(heap,indice,indice_anterior);
             i = 0;
             indice_anterior = indice;
@@ -118,11 +118,11 @@ void heap_heapfy_down(Heap *heap){
 }
 
 void *heap_pop(Heap *heap){
-    int *retorno = (int *)hash_table_pop(heap->h,heap->nodes[0].key);
-    free(retorno);
+    heap_swap(heap,0,heap->size-1);
     heap->size = heap->size - 1;
-    heap_swap(heap,0,heap->size);
     heap_heapfy_down(heap);
+    int *retorno = (int *)hash_table_pop(heap->h,heap->nodes[heap->size].key);
+    free(retorno);
     return heap->nodes[heap->size].key;
 }
 
