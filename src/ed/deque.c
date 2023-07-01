@@ -66,7 +66,7 @@ void deque_push_back(Deque *d, void *val){
 
 //uma base
 void deque_push_front(Deque *d, void *val){
-    int indice = d->indice_final - 1;
+    int indice = d->indice_inicial - 1;
     int bloco = d->bloco_inicial;
     if(indice == -1){
         indice = TAM_BLOCO - 1;
@@ -78,26 +78,25 @@ void deque_push_front(Deque *d, void *val){
         d->blocos[bloco] = (void**)calloc(TAM_BLOCO,sizeof(void*));
     }
     d->blocos[bloco][indice] = val;
-    d->indice_final = indice;
-    d->bloco_final = bloco;
+    d->indice_inicial = indice;
+    d->bloco_inicial = bloco;
 }
 
 //uma base
 void *deque_pop_front(Deque *d){
-    int idx_bloco, idx_indice;
-    idx_indice = d->indice_inicial + 1;
+    int idx_bloco, idx_indice,prox_indice;
+    idx_indice = d->indice_inicial;
+    prox_indice = idx_indice + 1;
     idx_bloco = d->bloco_inicial;
-    void *retorno;
-    if(idx_indice == TAM_BLOCO){
-        idx_indice = 0;
-        retorno = d->blocos[idx_bloco][idx_indice];
-        if(idx_bloco != d->n_blocos/2){
-            retorno = d->blocos[idx_bloco + 1][idx_indice];
+    void *retorno = d->blocos[idx_bloco][idx_indice];
+    if(prox_indice == TAM_BLOCO){
+        prox_indice = 0;
+        if((idx_bloco != d->bloco_inicial)||(idx_bloco != d->bloco_final)){
             free(d->blocos[idx_bloco]);
             idx_bloco = idx_bloco + 1;
         }
     }
-    d->indice_inicial = idx_indice;
+    d->indice_inicial = prox_indice;
     d->bloco_inicial = idx_bloco;
     return retorno;
 }
@@ -108,7 +107,7 @@ void *deque_pop_back(Deque *d){
     idx_indice = d->indice_final - 1;
     idx_bloco = d->bloco_final;
     void *retorno;
-    if(idx_indice == TAM_BLOCO){
+    if(idx_indice == -1){
         idx_indice = TAM_BLOCO - 1;
         retorno = d->blocos[idx_bloco][idx_indice];
         if(idx_bloco != d->n_blocos/2){
@@ -140,7 +139,7 @@ void *deque_get(Deque *d, int idx){
 
 //uma base
 void deque_destroy(Deque *d){
-    for(int i = 0; i <d->n_blocos;i++){
+    for(int i = d->bloco_inicial; i <=d->bloco_final;i++){       
         free(d->blocos[i]);
     }
     free(d->blocos);
