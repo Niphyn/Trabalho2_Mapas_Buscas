@@ -93,7 +93,22 @@ double heap_min_priority(Heap *heap){
 }
 
 void heap_heapfy_down(Heap *heap){
-    
+    int indice = 1,indice_anterior = 0, i = 0;
+    while(indice < heap->size){
+        if(heap->nodes[indice]->priority > heap->nodes[indice_anterior]->priority){
+            heap_swap(heap,indice,indice_anterior);
+            i = 0;
+            indice_anterior = indice;
+            indice = indice*2 + 1;
+        }else{
+            if(i == 1){
+                break;
+            }
+            i = 1;
+            indice_anterior = indice_anterior;
+            indice = indice_anterior + 1;
+        }
+    }
 }
 
 void *heap_pop(Heap *heap){
