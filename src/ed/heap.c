@@ -79,8 +79,10 @@ void *heap_push(Heap *heap, void *data, double priority){
         heap_heapfy_up(heap,heap->size-1);
         return NULL;
     }else{
-        heap->nodes[*existe].priority = priority;
-        heap_heapfy_up(heap,*existe);
+        if(priority < heap->nodes[*existe].priority){
+            heap->nodes[*existe].priority = priority;
+            heap_heapfy_up(heap,*existe);
+        }
         free(indice);
         return data;
     }
@@ -99,31 +101,47 @@ double heap_min_priority(Heap *heap){
 }
 
 void heap_heapfy_down(Heap *heap){
-    int indice = 1,indice_anterior = 0, i = 0;
-    while(indice < heap->size){
-        if(heap->nodes[indice].priority < heap->nodes[indice_anterior].priority){
-            heap_swap(heap,indice,indice_anterior);
-            i = 0;
-            indice_anterior = indice;
-            indice = indice*2 + 1;
+    int i_parent = 0, i_left = 1, i_right = 2;
+    while(i_left < heap->size){
+        if(heap->nodes[i_left].priority < heap->nodes[i_parent].priority){
+            if((i_right < heap->size)&&(heap->nodes[i_right].priority < heap->nodes[i_parent].priority)){
+                double d_right = heap->nodes[i_parent].priority - heap->nodes[i_right].priority;
+                double d_left = heap->nodes[i_parent].priority - heap->nodes[i_left].priority;
+                if(d_left >= d_right){
+                    heap_swap(heap,i_parent,i_left);
+                    i_parent = i_left;
+                }else{
+                    heap_swap(heap,i_parent,i_right);
+                    i_parent = i_right;
+                }
+            }else{
+                heap_swap(heap,i_parent,i_left);
+                i_parent = i_left;
+            }
         }else{
-            if(i == 1){
+            if((i_right < heap->size)&&heap->nodes[i_right].priority < heap->nodes[i_parent].priority){
+                heap_swap(heap,i_parent,i_right);
+                i_parent = i_right;
+            }else{
                 break;
             }
-            i = 1;
-            indice_anterior = indice_anterior;
-            indice = indice_anterior + 1;
         }
+        i_left = 2*i_parent + 1;
+        i_right = 2*i_parent + 2;
     }
 }
 
 void *heap_pop(Heap *heap){
-    heap_swap(heap,0,heap->size-1);
-    heap->size = heap->size - 1;
-    heap_heapfy_down(heap);
-    int *retorno = (int *)hash_table_pop(heap->h,heap->nodes[heap->size].key);
-    free(retorno);
-    return heap->nodes[heap->size].key;
+    if(heap->size >0){
+        heap_swap(heap,0,heap->size-1);
+        heap->size = heap->size - 1;
+        heap_heapfy_down(heap);
+        int *retorno = (int *)hash_table_pop(heap->h,heap->nodes[heap->size].key);
+        free(retorno);
+        return heap->nodes[heap->size].key;
+    }else{
+        return NULL;
+    }
 }
 
 void heap_destroy(Heap *heap){

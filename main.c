@@ -70,7 +70,9 @@ int main()
         {
             int priority = heap_min_priority(heap);
             Celula *cel = heap_pop(heap);
-            printf("%d %d %d\n", cel->x, cel->y, priority);
+            if(cel != NULL){
+                printf("%d %d %d\n", cel->x, cel->y, priority);
+            }
             celula_destroy(cel);
         }
     }
