@@ -3,8 +3,8 @@
 #include "deque.h"
 
 #define TAM_BLOCO 5
+#define N_BLOCO 5
 
-//uma base
 typedef struct Deque{
     void ***blocos;
     int bloco_inicial;
@@ -14,16 +14,15 @@ typedef struct Deque{
     int n_blocos;
 }Deque;
 
-//uma base
 Deque *deque_construct(){
     Deque *d = (Deque *)calloc(1,sizeof(Deque));
-    d->blocos = (void ***)calloc(1,sizeof(void**));
-    d->bloco_inicial = 0;
-    d->bloco_final = 0;
+    d->blocos = (void ***)calloc(N_BLOCO,sizeof(void**));
+    d->bloco_inicial = N_BLOCO/2 - 1;
+    d->bloco_final = N_BLOCO/2 - 1;
     d->blocos[d->bloco_inicial] = (void **)calloc(TAM_BLOCO,sizeof(void*));
     d->indice_inicial = 0;
     d->indice_final = 0;
-    d->n_blocos = 1;
+    d->n_blocos = N_BLOCO;
     return d;
 }
 
@@ -92,7 +91,6 @@ void deque_realocar(Deque *d){
     }
 }
 
-//uma base
 void deque_push_back(Deque *d, void *val){
     int indice = d->indice_final;
     int bloco = d->bloco_final;
@@ -110,7 +108,6 @@ void deque_push_back(Deque *d, void *val){
     d->bloco_final = bloco;
 }
 
-//uma base
 void deque_push_front(Deque *d, void *val){
     int indice = d->indice_inicial - 1;
     int bloco = d->bloco_inicial;
@@ -128,7 +125,6 @@ void deque_push_front(Deque *d, void *val){
     d->bloco_inicial = bloco;
 }
 
-//uma base
 void *deque_pop_front(Deque *d){
     int idx_bloco, idx_indice,prox_indice;
     idx_indice = d->indice_inicial;
@@ -145,7 +141,6 @@ void *deque_pop_front(Deque *d){
     return retorno;
 }
 
-//com problemas no input9.txt
 void *deque_pop_back(Deque *d){
     int idx_bloco, idx_indice;
     idx_indice = d->indice_final - 1;
@@ -162,12 +157,10 @@ void *deque_pop_back(Deque *d){
     return retorno;
 }
 
-//uma base
 int deque_size(Deque *d){
     return (d->bloco_final - d->bloco_inicial)*TAM_BLOCO + d->indice_final - d->indice_inicial;
 }
 
-//uma base
 void *deque_get(Deque *d, int idx){
     int pos_item, bloco_idx, item_idx;
     pos_item = idx + d->indice_inicial;
@@ -176,7 +169,6 @@ void *deque_get(Deque *d, int idx){
     return d->blocos[bloco_idx][item_idx];
 }
 
-//uma base
 void deque_destroy(Deque *d){
     for(int i = d->bloco_inicial; i <=d->bloco_final;i++){       
         free(d->blocos[i]);
