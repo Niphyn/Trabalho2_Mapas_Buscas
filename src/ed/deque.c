@@ -28,33 +28,32 @@ Deque *deque_construct(){
 }
 
 void deque_centralizar(Deque *d){
-    Deque *novo_deque = (Deque *)calloc(1,sizeof(Deque));
-        novo_deque->blocos = (void ***)calloc((d->n_blocos),sizeof(void**));
-        int b_ocupados = d->bloco_final - d->bloco_inicial + 1;
-        printf("B_ocupados %d\n",b_ocupados);
-        int idx_bloco_inicial = (d->n_blocos - b_ocupados)/2;
-        printf("Bloco inicial %d\n",idx_bloco_inicial);
-        int idx_bloco_final = idx_bloco_inicial + b_ocupados;
-        novo_deque->bloco_inicial = idx_bloco_inicial;
-        novo_deque->bloco_final = idx_bloco_final;
-        novo_deque->indice_inicial = d->indice_inicial;
-        d->indice_final = d->indice_final;
-        d->n_blocos = d->n_blocos;
-        for(int i = 0; i <b_ocupados;i++){
-            novo_deque->blocos[novo_deque->bloco_inicial + i] = (void **)calloc(TAM_BLOCO,sizeof(void*));
+    void ***prev = d->blocos;
+    void ***novo_blocos = (void ***)calloc(d->n_blocos,sizeof(void**));
+    int b_ocupados = d->bloco_final - d->bloco_inicial + 1;
+    int idx_bloco_inicial = (d->n_blocos - b_ocupados)/2;
+    int idx_bloco_final = idx_bloco_inicial + b_ocupados - 1;
+
+    for(int i = 0; i <b_ocupados;i++){
+        novo_blocos[idx_bloco_inicial + i] = (void **)calloc(TAM_BLOCO,sizeof(void*));
+    }
+    int indice_bloco = idx_bloco_inicial;
+    int indice_item = d->indice_inicial;
+    for(int i = 0; i < deque_size(d); i++){
+        novo_blocos[indice_bloco][indice_item] = deque_get(d,i);
+        indice_item++;
+        if(indice_item == TAM_BLOCO){
+            indice_bloco++;
+            indice_item = 0;
         }
-        int indice_bloco = novo_deque->bloco_inicial;
-        int indice_item = novo_deque->indice_inicial;
-        for(int i = 0; i < deque_size(d); i++){
-            novo_deque->blocos[indice_bloco][indice_item] = deque_get(d,i);
-            indice_item++;
-            if(indice_item == TAM_BLOCO){
-                indice_bloco++;
-                indice_item = 0;
-            }
-        }
-        deque_destroy(d);
-        d = novo_deque;
+    }
+    for(int i = d->bloco_inicial; i <=d->bloco_final;i++){       
+        free(prev[i]);
+    }
+    free(prev);
+    d->bloco_inicial = idx_bloco_inicial;
+    d->bloco_final = idx_bloco_final;
+    d->blocos = novo_blocos;
 }
 
 void deque_realocar(Deque *d){
@@ -105,7 +104,7 @@ void deque_push_front(Deque *d, void *val){
     if(indice == -1){
         indice = TAM_BLOCO - 1;
         bloco = bloco - 1;
-        if(bloco == 0){
+        if(bloco == -1){
             deque_realocar(d);
             bloco = d->bloco_inicial - 1;
         }
