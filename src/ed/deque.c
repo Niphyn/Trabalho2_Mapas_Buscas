@@ -17,9 +17,9 @@ typedef struct Deque{
 //uma base
 Deque *deque_construct(){
     Deque *d = (Deque *)calloc(1,sizeof(Deque));
-    d->blocos = (void ***)calloc(5,sizeof(void**));
-    d->bloco_inicial = 2;
-    d->bloco_final = 2;
+    d->blocos = (void ***)calloc(1,sizeof(void**));
+    d->bloco_inicial = 0;
+    d->bloco_final = 0;
     d->blocos[d->bloco_inicial] = (void **)calloc(TAM_BLOCO,sizeof(void*));
     d->indice_inicial = 0;
     d->indice_final = 0;
