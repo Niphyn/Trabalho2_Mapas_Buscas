@@ -57,6 +57,12 @@ int main()
         }
     }
 
+    for(int i = 0; i < deque_size(d);i++){
+        Celula *c = deque_get(d,i);
+        celula_free(c);
+    }
+
     deque_destroy(d);
+
     return 0;
 }

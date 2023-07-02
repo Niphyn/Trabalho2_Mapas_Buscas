@@ -101,7 +101,7 @@ void *deque_pop_front(Deque *d){
     return retorno;
 }
 
-//uma base
+//com problemas no input9.txt
 void *deque_pop_back(Deque *d){
     int idx_bloco, idx_indice;
     idx_indice = d->indice_final - 1;
@@ -132,7 +132,7 @@ int deque_size(Deque *d){
 void *deque_get(Deque *d, int idx){
     int pos_item, bloco_idx, item_idx;
     pos_item = idx + d->indice_inicial;
-    bloco_idx = pos_item/TAM_BLOCO;
+    bloco_idx = pos_item/TAM_BLOCO + d->bloco_inicial;
     item_idx = pos_item%TAM_BLOCO;
     return d->blocos[bloco_idx][item_idx];
 }
