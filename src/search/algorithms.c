@@ -1,8 +1,11 @@
 
 #include <math.h>
-#include <stdio.h>
+#include <stdio.h> 
 #include <stdlib.h>
 #include "algorithms.h"
+#include "stack.h"
+#include "queue.h"
+#include "heap.h"
 
 ResultData _default_result()
 {
