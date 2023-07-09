@@ -12,8 +12,8 @@ void print_result(ResultData *result)
         return;
     }
 
-    for (int i = 0; i < result->tamanho_caminho; i++)
-        printf("%d %d\n", result->caminho[i].x, result->caminho[i].y);
+    for (int i = result->tamanho_caminho - 1; i >= 0; i--)
+        printf("%d %d\n", result->caminho[i].y, result->caminho[i].x);
 
     printf("%.2lf\n", result->custo_caminho);
     printf("%d\n", result->tamanho_caminho);

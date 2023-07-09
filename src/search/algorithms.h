@@ -3,9 +3,9 @@
 #define _ALGORITHMS_H_
 
 #include "labirinto.h"
-#include "stack.h"
-#include "queue.h"
-#include "heap.h"
+#include "../ed/stack.h"
+#include "../ed/queue.h"
+#include "../ed/heap.h"
 
 typedef struct
 {

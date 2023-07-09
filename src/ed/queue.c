@@ -8,7 +8,7 @@ typedef struct Queue{
 }Queue;
 
 Queue *queue_construct(){
-    Queue *fila = (Queue*)calloc(1,sizeof(Queue))
+    Queue *fila = (Queue*)calloc(1,sizeof(Queue));
     fila->deque_fila = deque_construct();
     return fila;
 }
