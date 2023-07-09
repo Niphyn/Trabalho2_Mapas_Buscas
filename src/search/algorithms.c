@@ -37,7 +37,7 @@ ResultData depth_first_search(Labirinto *l, Celula inicio, Celula fim)
     return _default_result();
 }
 
-void calcular_vizinhos_validos(Queue *fila, Celula_expandida *atual,Labirinto *l){
+void calcular_vizinhos_validos_fila(Queue *fila, Celula_expandida *atual,Labirinto *l){
     int linha_atual = atual->celula->y, coluna_atual = atual->celula->x,linha,coluna;
     Celula_expandida *vizinho = NULL;
     linha = linha_atual - 1;
@@ -153,6 +153,122 @@ void calcular_vizinhos_validos(Queue *fila, Celula_expandida *atual,Labirinto *l
     }
 }
 
+void calcular_vizinhos_validos_pilha(Stack *pilha, Celula_expandida *atual,Labirinto *l){
+    int linha_atual = atual->celula->y, coluna_atual = atual->celula->x,linha,coluna;
+    Celula_expandida *vizinho = NULL;
+    linha = linha_atual - 1;
+    coluna = coluna_atual;
+    if(!(linha < 0 || linha >= labirinto_n_linhas(l) || coluna < 0 || coluna >= labirinto_n_colunas(l))){
+        if((labirinto_obter(l,linha,coluna) != OCUPADO)&&(labirinto_obter(l,linha,coluna) != FRONTEIRA)){
+            vizinho = (Celula_expandida *)calloc(1,sizeof(Celula_expandida));
+            vizinho->celula = (Celula *)calloc(1,sizeof(Celula));
+            vizinho->celula->x = coluna;
+            vizinho->celula->y = linha;
+            vizinho->parent = atual;
+            stack_push(pilha,vizinho);
+            labirinto_atribuir(l,linha,coluna,FRONTEIRA);
+        }
+    }
+
+    linha = linha_atual - 1;
+    coluna = coluna_atual + 1;
+    if(!(linha < 0 || linha >= labirinto_n_linhas(l) || coluna < 0 || coluna >= labirinto_n_colunas(l))){
+        if((labirinto_obter(l,linha,coluna) != OCUPADO)&&(labirinto_obter(l,linha,coluna) != FRONTEIRA)){
+           vizinho = (Celula_expandida *)calloc(1,sizeof(Celula_expandida));
+            vizinho->celula = (Celula *)calloc(1,sizeof(Celula));
+            vizinho->celula->x = coluna;
+            vizinho->celula->y = linha;
+            vizinho->parent = atual;
+            stack_push(pilha,vizinho);
+            labirinto_atribuir(l,linha,coluna,FRONTEIRA);
+        }
+    }
+
+    linha = linha_atual;
+    coluna = coluna_atual + 1;
+    if(!(linha < 0 || linha >= labirinto_n_linhas(l) || coluna < 0 || coluna >= labirinto_n_colunas(l))){
+        if((labirinto_obter(l,linha,coluna) != OCUPADO)&&(labirinto_obter(l,linha,coluna) != FRONTEIRA)){
+            vizinho = (Celula_expandida *)calloc(1,sizeof(Celula_expandida));
+            vizinho->celula = (Celula *)calloc(1,sizeof(Celula));
+            vizinho->celula->x = coluna;
+            vizinho->celula->y = linha;
+            vizinho->parent = atual;
+            stack_push(pilha,vizinho);
+            labirinto_atribuir(l,linha,coluna,FRONTEIRA);
+        }
+    }
+
+    linha = linha_atual + 1;
+    coluna = coluna_atual + 1;
+    if(!(linha < 0 || linha >= labirinto_n_linhas(l) || coluna < 0 || coluna >= labirinto_n_colunas(l))){
+        if((labirinto_obter(l,linha,coluna) != OCUPADO)&&(labirinto_obter(l,linha,coluna) != FRONTEIRA)){
+            vizinho = (Celula_expandida *)calloc(1,sizeof(Celula_expandida));
+            vizinho->celula = (Celula *)calloc(1,sizeof(Celula));
+            vizinho->celula->x = coluna;
+            vizinho->celula->y = linha;
+            vizinho->parent = atual;
+            stack_push(pilha,vizinho);
+            labirinto_atribuir(l,linha,coluna,FRONTEIRA);
+        }
+    }
+
+    linha = linha_atual + 1;
+    coluna = coluna_atual;
+    if(!(linha < 0 || linha >= labirinto_n_linhas(l) || coluna < 0 || coluna >= labirinto_n_colunas(l))){
+        if((labirinto_obter(l,linha,coluna) != OCUPADO)&&(labirinto_obter(l,linha,coluna) != FRONTEIRA)){
+            vizinho = (Celula_expandida *)calloc(1,sizeof(Celula_expandida));
+            vizinho->celula = (Celula *)calloc(1,sizeof(Celula));
+            vizinho->celula->x = coluna;
+            vizinho->celula->y = linha;
+            vizinho->parent = atual;
+            stack_push(pilha,vizinho);
+            labirinto_atribuir(l,linha,coluna,FRONTEIRA);
+        }
+    }
+
+    linha = linha_atual + 1;
+    coluna = coluna_atual - 1;
+    if(!(linha < 0 || linha >= labirinto_n_linhas(l) || coluna < 0 || coluna >= labirinto_n_colunas(l))){
+        if((labirinto_obter(l,linha,coluna) != OCUPADO)&&(labirinto_obter(l,linha,coluna) != FRONTEIRA)){
+            vizinho = (Celula_expandida *)calloc(1,sizeof(Celula_expandida));
+            vizinho->celula = (Celula *)calloc(1,sizeof(Celula));
+            vizinho->celula->x = coluna;
+            vizinho->celula->y = linha;
+            vizinho->parent = atual;
+            stack_push(pilha,vizinho);
+            labirinto_atribuir(l,linha,coluna,FRONTEIRA);
+        }
+    }
+
+    linha = linha_atual;
+    coluna = coluna_atual - 1;
+    if(!(linha < 0 || linha >= labirinto_n_linhas(l) || coluna < 0 || coluna >= labirinto_n_colunas(l))){
+        if((labirinto_obter(l,linha,coluna) != OCUPADO)&&(labirinto_obter(l,linha,coluna) != FRONTEIRA)){
+            vizinho = (Celula_expandida *)calloc(1,sizeof(Celula_expandida));
+            vizinho->celula = (Celula *)calloc(1,sizeof(Celula));
+            vizinho->celula->x = coluna;
+            vizinho->celula->y = linha;
+            vizinho->parent = atual;
+            stack_push(pilha,vizinho);
+            labirinto_atribuir(l,linha,coluna,FRONTEIRA);
+        }
+    }
+
+    linha = linha_atual - 1;
+    coluna = coluna_atual - 1;
+    if(!(linha < 0 || linha >= labirinto_n_linhas(l) || coluna < 0 || coluna >= labirinto_n_colunas(l))){
+        if((labirinto_obter(l,linha,coluna) != OCUPADO)&&(labirinto_obter(l,linha,coluna) != FRONTEIRA)){
+            vizinho = (Celula_expandida *)calloc(1,sizeof(Celula_expandida));
+            vizinho->celula = (Celula *)calloc(1,sizeof(Celula));
+            vizinho->celula->x = coluna;
+            vizinho->celula->y = linha;
+            vizinho->parent = atual;
+            stack_push(pilha,vizinho);
+            labirinto_atribuir(l,linha,coluna,FRONTEIRA);
+        }
+    }
+}
+
 ResultData breadth_first_search(Labirinto *l, Celula inicio, Celula fim)
 {
     ResultData result = _default_result();
@@ -174,7 +290,7 @@ ResultData breadth_first_search(Labirinto *l, Celula inicio, Celula fim)
             result.sucesso = 1;
             break;
         }
-        calcular_vizinhos_validos(fronteira,celula_atual,l);
+        calcular_vizinhos_validos_fila(fronteira,celula_atual,l);
         result.nos_expandidos++;
     }
 
